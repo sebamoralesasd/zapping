@@ -1,6 +1,6 @@
 # zapping
 
-Consulta el watchlist de [letterboxd](letterboxd.com) de un usuario y para cada película muestra en qué servicios de streaming está disponible.
+Consulta el watchlist de [letterboxd](https://www.letterboxd.com) de un usuario y para cada película muestra en qué servicios de streaming está disponible.
 
 TODO
 - [ ] Consultar el watchlist de un usuario, sea mediante su API o a partir de un csv exportado por letterboxd.
