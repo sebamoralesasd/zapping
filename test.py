@@ -3,8 +3,9 @@ import json
 from justwatch_client import *
 import numpy as np
 from movie import Movie
-
 from collections import defaultdict, Counter
+import click
+
 class Group:
   def by_provider(self, movies):
     lista = []
@@ -17,7 +18,6 @@ class Group:
 
 class Formatter:
   def get_provider(self, offer):
-    # package = offer['package_short_name']
     provider_list = {
       'hbm': 'HBO Max',
       'itu': 'Apple TV',
@@ -77,23 +77,42 @@ class Watchlist:
     jw = JWQuery()
     print("Cargando películas en la base de datos")
     for titulo in self.watchlist:
-      # print(f"Título en watchlist: {titulo}")
       results = jw.request(titulo)
       self.create_movie(titulo, results.title, results.offers)
 
 
-  def where_to_watch(self):
+  def movie(self):
     pres = Presenter()
     for movie in self.movies:
       pres.present(movie)
   
-  def group(self):
+  def provider(self):
     diccio = Group().by_provider(self.movies)
     pres = Presenter()
     pres.group_present(diccio)
 
-if __name__ == "__main__":
+
+@click.group()
+def cli():
+  pass
+
+@cli.command()
+def movie():
+  """
+  Mostrar resultados agrupados por película.
+  """
   watchlist = Watchlist()
   watchlist.fetch_movies()
-  #watchlist.where_to_watch()
-  watchlist.group()
+  watchlist.movie()
+
+@cli.command()
+def streaming():
+  """
+  Mostrar resultados agrupados por streaming.
+  """
+  watchlist = Watchlist()
+  watchlist.fetch_movies()
+  watchlist.provider()
+
+if __name__ == "__main__":
+  cli()
