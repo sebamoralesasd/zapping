@@ -4,7 +4,7 @@ Consulta el watchlist de [letterboxd](https://www.letterboxd.com) de un usuario 
 
 ## Uso
 
-Ejecutar `pip install -r requirements.txt` para instalar las dependencias del script. Luego, exportar desde letterboxd el watchlist de un usuario. Es un archivo csv.
+Ejecutar `pip install -r requirements.txt` para instalar las dependencias del script. Luego, exportar desde letterboxd el watchlist de un usuario. Es un archivo csv, **lo tienen que guardar como `watchlist.csv`**.
 
 El output por defecto (`python3 zapping.py`) es el siguiente:
 
