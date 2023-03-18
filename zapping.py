@@ -70,7 +70,7 @@ class Watchlist:
         self.movies = []
         self.watchlist = []
 
-        with open("test.csv") as csv_file:
+        with open("watchlist.csv") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=",")
             next(csv_reader, None)  # Se saltea el header. Es más lindo con pandas
 
