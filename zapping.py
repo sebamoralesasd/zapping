@@ -47,6 +47,8 @@ class Presenter:
 
   def present(self, movie: Movie):
     print(f"Título: {movie.name}")
+  
+  def available_in(self, movie: Movie):
     print(f"Disponible en: {self.fmt.providers(movie)}")
   
   def group_present(self, diccio):
@@ -62,7 +64,8 @@ class Watchlist:
   def __init__(self):
     self.movies = []
     self.watchlist = []
-    with open('watchlist.csv') as csv_file:
+
+    with open('test.csv') as csv_file:
       csv_reader = csv.reader(csv_file, delimiter=',')
       next(csv_reader, None)    # Se saltea el header. Es más lindo con pandas
 
@@ -79,12 +82,21 @@ class Watchlist:
     for titulo in self.watchlist:
       results = jw.request(titulo)
       self.create_movie(titulo, results.title, results.offers)
-
+  
+  def unavailable_movies(self):
+    print("\n\n")
+    print("Las siguientes películas no están en ningún streaming:\n")
+    pres = Presenter()
+    for movie in self.movies:
+      if movie.available == False:
+        pres.present(movie)
 
   def movie(self):
     pres = Presenter()
     for movie in self.movies:
-      pres.present(movie)
+      if movie.available:
+        pres.present(movie)
+        pres.available_in(movie)
   
   def provider(self):
     diccio = Group().by_provider(self.movies)
@@ -93,26 +105,35 @@ class Watchlist:
 
 
 @click.group()
-def cli():
-  pass
+@click.option("--show_all", is_flag=True, show_default=True, default=False, help="Mostrar todas las películas, incluyendo no disponibles.")
+@click.pass_context
+def cli(ctx,show_all):
+  ctx.obj = {"show_all": show_all}
+
 
 @cli.command()
-def movie():
+@click.pass_context
+def movie(ctx):
   """
   Mostrar resultados agrupados por película.
   """
   watchlist = Watchlist()
   watchlist.fetch_movies()
   watchlist.movie()
+  if ctx.obj["show_all"]:
+    watchlist.unavailable_movies()
 
 @cli.command()
-def streaming():
+@click.pass_context
+def streaming(ctx):
   """
   Mostrar resultados agrupados por streaming.
   """
   watchlist = Watchlist()
   watchlist.fetch_movies()
   watchlist.provider()
+  if ctx.obj["show_all"]:
+    watchlist.unavailable_movies()
 
 if __name__ == "__main__":
   cli()
