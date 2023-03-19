@@ -19,6 +19,23 @@ class Group:
         return [{"prov": k, "movie": Counter(v)} for k, v in inp.items()]
 
 
+class Filter:
+    def streaming_list(self):
+        return {
+            "hbm": "HBO Max",
+            "srp": "Star+",
+            "nfx": "Netflix",
+            "ptv": "PlutoTV",
+        }
+
+    def streaming(self, list):
+        filtro = []
+        for dict in list:
+            if dict["prov"] in self.streaming_list():
+                filtro.append(dict)
+        return filtro
+
+
 class Formatter:
     def get_provider(self, offer):
         provider_list = {
@@ -50,7 +67,7 @@ class Presenter:
         self.fmt = Formatter()
 
     def present(self, movie: Movie):
-        print(f"Título: {movie.name}")
+        print(f"Título: {movie.query_name}")
 
     def available_in(self, movie: Movie):
         print(f"Disponible en: {self.fmt.providers(movie)}")
@@ -59,7 +76,7 @@ class Presenter:
         for val in diccio:
             print(self.fmt.get_provider(val["prov"]))
             for mov in val["movie"]:
-                print(f"    -> {mov.name}")
+                print(f"    -> {mov.query_name}")
 
     # def pretty(self, jw_response):
     #   print(json.dumps(jw_response.offers, sort_keys=True, indent=3))
@@ -105,8 +122,9 @@ class Watchlist:
 
     def provider(self):
         diccio = Group().by_provider(self.movies)
+        filtrado = Filter().streaming(diccio)
         pres = Presenter()
-        pres.group_present(diccio)
+        pres.group_present(filtrado)
 
 
 @click.group()
