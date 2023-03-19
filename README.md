@@ -13,6 +13,8 @@ Usage: zapping.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --help  Show this message and exit.
+  --show_all  Mostrar todas las películas, incluyendo no disponibles.
+              [default: False]
 
 Commands:
   movie      Mostrar resultados agrupados por película.
@@ -61,6 +63,6 @@ QubitTV
 
 ## TODO
 - [ ] Consultar el watchlist de un usuario mediante la API de letterboxd.
-- [ ] Proveer distintos tipos de filtros (sin filtro, por película, por streaming)
-- [ ] Probar distintas salidas a pantalla
+- [x] Proveer distintos tipos de filtros (sin filtro, por película, por streaming)
+- [x] Probar distintas salidas a pantalla
 - [ ] Manejar los errores de todos los pasos anteriores
