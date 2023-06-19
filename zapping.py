@@ -1,3 +1,4 @@
+from bisect import insort
 import csv
 import json
 from justwatch_client import *
@@ -96,7 +97,8 @@ class Watchlist:
 
     def create_movie(self, query_name, name, providers):
         movie = Movie(query_name, name, providers)
-        self.movies.append(movie)
+        # Ordenar por nombre de letterboxd
+        insort(self.movies, movie, key=lambda x: x.query_name)
 
     def fetch_movies(self):
         jw = JWQuery()
